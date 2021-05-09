@@ -128,6 +128,7 @@ void main() {
       },
       expect: [isA<CounterModel>()],
       verify: (models) {
+        expect(models.length, 1);
         expect(models[0]?.count, 0);
         expect(models[0]?.isLoading, false);
       },
