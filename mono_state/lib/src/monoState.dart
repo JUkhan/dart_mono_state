@@ -101,7 +101,5 @@ class MonoState {
       value.cancel();
     });
     _subscriptions.clear();
-    _dispatcher.close();
-    _store.close();
   }
 }
