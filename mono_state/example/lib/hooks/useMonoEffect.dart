@@ -8,12 +8,10 @@ useMonoEffect<S>(EffectCallback stream$) {
   final MonoState mono = useMono();
 
   useEffect(() {
-    print('----useMonoEffect-----');
     final sub = stream$(mono.action$, mono).listen((action) {
       mono.dispatch(action);
     });
     return () {
-      print('-------unsubscribe of mono effect------  ');
       sub.cancel();
     };
   }, [mono]);

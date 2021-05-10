@@ -7,12 +7,10 @@ ValueNotifier<S> useSelector<S>(String stateName) {
   final MonoState mono = useMono();
   final state = useState<S>(mono.getState(stateName));
   useEffect(() {
-    print('----useSelector-----');
     final sub = mono.select<S>(stateName).listen((res) {
       state.value = res;
     });
     return () {
-      print('-------unsubscribe------  ');
       sub.cancel();
     };
   }, [stateName, mono]);

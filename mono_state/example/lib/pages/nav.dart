@@ -7,13 +7,13 @@ import './todoPage.dart';
 List<Widget> nav() => [
       ElevatedButton(
         onPressed: () {
-          Get.off(CounterPage());
+          Get.off(() => CounterPage());
         },
         child: const Text('Counter'),
       ),
       ElevatedButton(
         onPressed: () {
-          Get.off(TodoPage());
+          Get.off(() => TodoPage());
         },
         child: const Text('Todos'),
       ),

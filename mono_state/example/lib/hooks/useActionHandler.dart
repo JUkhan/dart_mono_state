@@ -19,14 +19,12 @@ ValueNotifier<ActionHandlerResponse<S>> useActionHandler<S>(
   final state = useState<ActionHandlerResponse<S>>(
       new ActionHandlerResponse(true, null, null));
   useEffect(() {
-    print('----useActionHandler-----');
     final sub = stream$(mono.action$, mono).listen((res) {
       state.value = new ActionHandlerResponse<S>(false, null, res);
     }, onError: ((err) {
       state.value = new ActionHandlerResponse<S>(false, err, state.value.data);
     }));
     return () {
-      print('-------unsubscribe of actionHandler------  ');
       sub.cancel();
     };
   }, [mono]);
