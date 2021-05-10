@@ -1,8 +1,8 @@
 # Mono State
 
 The example contains `counter` and `todos` pages to demonstrate mono_state lib
-out of the box. To avoid boilerplate codes this example uses flutter_hooks and
-exposed some useful custom hooks that makes your life easy.
+out of the box. To avoid boilerplate coding this example uses flutter_hooks and
+expose some useful custom hooks that makes your life easy.
 
 ## Run the app
 
