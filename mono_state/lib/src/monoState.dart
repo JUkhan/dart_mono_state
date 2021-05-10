@@ -54,12 +54,12 @@ class MonoState {
     });
   }
 
-  Stream<T?> select<T>(String stateName) {
-    return _store.map<T?>((dic) => dic[stateName]).distinct();
+  Stream<T> select<T>(String stateName) {
+    return _store.map<T>((dic) => dic[stateName]).distinct();
   }
 
   S getState<S>(String stateName) {
-    return _store.value.containsKey(stateName) ? _store.value[stateName] : null;
+    return _store.value[stateName];
   }
 
   void dispatch(Action action) {
