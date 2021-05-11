@@ -25,8 +25,7 @@ class CounterModel {
 }
 
 class CounterState extends StateBase<CounterModel> {
-  CounterState()
-      : super(stateName: 'counter', initialState: CounterModel.init());
+  CounterState() : super(CounterModel.init());
 
   @override
   void mapActionToState(
@@ -42,7 +41,7 @@ class CounterState extends StateBase<CounterModel> {
       case 'asyncInc':
         emit(state.copyWith(isLoading: true));
         await Future.delayed(const Duration(milliseconds: 10));
-        state = store.getState('counter');
+        state = store.getState<CounterState>();
         emit(state.copyWith(count: state.count + 1, isLoading: false));
 
         break;
@@ -50,7 +49,6 @@ class CounterState extends StateBase<CounterModel> {
     }
   }
 }
-
 
 ```
 
@@ -72,45 +70,45 @@ void main() {
     tearDown(() {
       awesome.dispose();
     });
-    ajwahTest<CounterModel?>(
+    ajwahTest<CounterModel>(
       'CounterState initialize',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       expect: [isA<CounterModel>()],
       verify: (models) {
-        expect(models[0]?.count, 0);
-        expect(models[0]?.isLoading, false);
+        expect(models[0].count, 0);
+        expect(models[0].isLoading, false);
       },
     );
-    ajwahTest<CounterModel?>(
+    ajwahTest<CounterModel>(
       'CounterState increment',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       act: () {
         awesome.dispatch(Action(type: 'inc'));
       },
       expect: [isA<CounterModel>()],
       skip: 1,
       verify: (models) {
-        expect(models[0]?.count, 1);
-        expect(models[0]?.isLoading, false);
+        expect(models[0].count, 1);
+        expect(models[0].isLoading, false);
       },
     );
 
-    ajwahTest<CounterModel?>(
+    ajwahTest<CounterModel>(
       'CounterState decrement',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       act: () {
         awesome.dispatch(Action(type: 'dec'));
       },
       expect: [isA<CounterModel>()],
       skip: 1,
       verify: (models) {
-        expect(models[0]?.count, -1);
-        expect(models[0]?.isLoading, false);
+        expect(models[0].count, -1);
+        expect(models[0].isLoading, false);
       },
     );
-    ajwahTest<CounterModel?>(
+    ajwahTest<CounterModel>(
       'CounterState asyncInc',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       act: () {
         awesome.dispatch(Action(type: 'asyncInc'));
       },
@@ -118,31 +116,33 @@ void main() {
       skip: 1,
       wait: const Duration(milliseconds: 10),
       verify: (models) {
-        expect(models[0]?.isLoading, true);
-        expect(models[1]?.isLoading, false);
-        expect(models[1]?.count, 1);
+        expect(models[0].isLoading, true);
+        expect(models[1].isLoading, false);
+        expect(models[1].count, 1);
       },
     );
-    ajwahTest<CounterModel?>(
+    ajwahTest<CounterModel>(
       'importState',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       act: () {
-        awesome.importState('counter', CounterModel(101, false));
+        awesome.importState<CounterState>(CounterModel(101, false));
       },
       expect: [isA<CounterModel>()],
       skip: 1,
       verify: (models) {
-        expect(models[0]?.count, 101);
-        expect(models[0]?.isLoading, false);
+        expect(models[0].count, 101);
+        expect(models[0].isLoading, false);
       },
     );
-    ajwahTest<CounterModel?>('unregister state',
-        build: () => awesome.select<CounterModel>('counter'),
-        act: () {
-          awesome.unregisterState('counter');
-        },
-        expect: [null],
-        skip: 1);
+    ajwahTest<CounterModel>(
+      'unregister state',
+      build: () => awesome.select<CounterState, CounterModel>(),
+      act: () {
+        awesome.unregisterState<CounterState>();
+      },
+      expect: [],
+      skip: 1,
+    );
 
     ajwahTest<Action>(
       'action handler whereType',
@@ -178,9 +178,10 @@ void main() {
         expect(models[0].type, 'awesome');
       },
     );
-    ajwahTest<CounterModel?>(
+
+    ajwahTest<CounterModel>(
       'dispose',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       act: () {
         awesome.dispose();
         awesome.dispatch(Action(type: 'inc'));
@@ -188,8 +189,8 @@ void main() {
       expect: [isA<CounterModel>()],
       verify: (models) {
         expect(models.length, 1);
-        expect(models[0]?.count, 0);
-        expect(models[0]?.isLoading, false);
+        expect(models[0].count, 0);
+        expect(models[0].isLoading, false);
       },
     );
   });
