@@ -1,31 +1,36 @@
-import 'package:flutter/material.dart' hide Action;
-import 'package:mono_state/mono_state.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:rxdart/rxdart.dart';
 
+import '../hooks/useMonoEffect.dart';
 import '../hooks/useDispatch.dart';
 import '../hooks/useMono.dart';
 import '../states/counter.dart';
 import '../widgets/counterDisplay.dart';
 import './nav.dart';
 
-class CounterPage extends StatelessWidget {
+class CounterPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final dispatch = useDispatch();
+    useMonoEffect((action$, _) => action$
+        .isA<AsyncIncrement>()
+        .delay(const Duration(seconds: 1))
+        .mapTo(Increment()));
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Counter'),
         actions: nav(),
       ),
-
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          counterActions(dispatch),
+          counterActions(),
           CounterDisplay(),
           stateRegisterUnregister(),
         ],
-      )), // This trailing comma makes auto-formatting nicer for build methods.
+      )),
     );
   }
 
@@ -42,7 +47,7 @@ class CounterPage extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            mono.unregisterState('counter');
+            mono.unregisterState<CounterState>();
           },
           child: const Text('Unregister State'),
         ),
@@ -50,25 +55,27 @@ class CounterPage extends StatelessWidget {
     );
   }
 
-  Row counterActions(void Function(Action) dispatch) {
+  Row counterActions() {
+    final dispatch = useDispatch();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton(
           onPressed: () {
-            dispatch(Action(type: 'inc'));
+            dispatch(Increment());
           },
           child: const Text('Inc'),
         ),
         ElevatedButton(
           onPressed: () {
-            dispatch(Action(type: 'dec'));
+            dispatch(Decrement());
           },
           child: const Text('Dec'),
         ),
         ElevatedButton(
           onPressed: () {
-            dispatch(Action(type: 'asyncInc'));
+            dispatch(AsyncIncrement());
           },
           child: const Text('Async Inc'),
         ),

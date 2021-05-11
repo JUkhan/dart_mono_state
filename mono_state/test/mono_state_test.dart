@@ -15,7 +15,7 @@ void main() {
     });
     ajwahTest<CounterModel>(
       'CounterState initialize',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       expect: [isA<CounterModel>()],
       verify: (models) {
         expect(models[0].count, 0);
@@ -24,7 +24,7 @@ void main() {
     );
     ajwahTest<CounterModel>(
       'CounterState increment',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       act: () {
         awesome.dispatch(Action(type: 'inc'));
       },
@@ -38,7 +38,7 @@ void main() {
 
     ajwahTest<CounterModel>(
       'CounterState decrement',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       act: () {
         awesome.dispatch(Action(type: 'dec'));
       },
@@ -51,7 +51,7 @@ void main() {
     );
     ajwahTest<CounterModel>(
       'CounterState asyncInc',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       act: () {
         awesome.dispatch(Action(type: 'asyncInc'));
       },
@@ -66,9 +66,9 @@ void main() {
     );
     ajwahTest<CounterModel>(
       'importState',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       act: () {
-        awesome.importState('counter', CounterModel(101, false));
+        awesome.importState<CounterState>(CounterModel(101, false));
       },
       expect: [isA<CounterModel>()],
       skip: 1,
@@ -79,9 +79,9 @@ void main() {
     );
     ajwahTest<CounterModel>(
       'unregister state',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       act: () {
-        awesome.unregisterState('counter');
+        awesome.unregisterState<CounterState>();
       },
       expect: [],
       skip: 1,
@@ -121,9 +121,10 @@ void main() {
         expect(models[0].type, 'awesome');
       },
     );
+
     ajwahTest<CounterModel>(
       'dispose',
-      build: () => awesome.select<CounterModel>('counter'),
+      build: () => awesome.select<CounterState, CounterModel>(),
       act: () {
         awesome.dispose();
         awesome.dispatch(Action(type: 'inc'));

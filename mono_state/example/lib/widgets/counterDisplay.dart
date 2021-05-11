@@ -7,7 +7,7 @@ import '../states/counter.dart';
 class CounterDisplay extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final counter = useSelector<CounterModel?>('counter');
+    final counter = useSelector<CounterState, CounterModel?>();
 
     if (counter.value == null)
       return Text(

@@ -18,29 +18,23 @@ class CounterModel {
 }
 
 class CounterState extends StateBase<CounterModel> {
-  CounterState()
-      : super(stateName: 'counter', initialState: CounterModel.init());
+  CounterState() : super(CounterModel.init());
 
   @override
   void mapActionToState(
-      CounterModel state, Action action, emit, MonoState store) async {
-    switch (action.type) {
-      case 'inc':
-        emit(state.copyWith(count: state.count + 1, isLoading: false));
-        break;
-      case 'dec':
-        emit(state.copyWith(count: state.count - 1, isLoading: false));
-        //store.unregisterState('counter');
-        //store.registerState(CounterState());
-        break;
-      case 'asyncInc':
-        emit(state.copyWith(isLoading: true));
-        await Future.delayed(const Duration(seconds: 1));
-        state = store.getState('counter');
-        emit(state.copyWith(count: state.count + 1, isLoading: false));
-
-        break;
-      default:
+      CounterModel state, Action action, emit, MonoState mono) async {
+    if (action is Increment) {
+      emit(state.copyWith(count: state.count + 1, isLoading: false));
+    } else if (action is Decrement) {
+      emit(state.copyWith(count: state.count - 1, isLoading: false));
+    } else if (action is AsyncIncrement) {
+      emit(state.copyWith(isLoading: true));
     }
   }
 }
+
+class Increment extends Action {}
+
+class Decrement extends Action {}
+
+class AsyncIncrement extends Action {}

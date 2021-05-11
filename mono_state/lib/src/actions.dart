@@ -7,6 +7,10 @@ class Actions {
   final BehaviorSubject<Action> _dispatcher;
   Actions(this._dispatcher);
 
+  Stream<T> isA<T>() => _dispatcher
+      .where((action) => action is T)
+      .map<T>((action) => action as T);
+
   Stream<Action> whereType(String actionType) =>
       _dispatcher.where((action) => action.type == actionType);
 

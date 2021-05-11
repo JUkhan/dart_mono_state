@@ -3,16 +3,16 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mono_state/mono_state.dart';
 import './useMono.dart';
 
-ValueNotifier<S> useSelector<S>(String stateName) {
+ValueNotifier<Model> useSelector<State, Model>() {
   final MonoState mono = useMono();
-  final state = useState<S>(mono.getState(stateName));
+  final state = useState<Model>(mono.getState<State>());
   useEffect(() {
-    final sub = mono.select<S>(stateName).listen((res) {
+    final sub = mono.select<State, Model>().listen((res) {
       state.value = res;
     });
     return () {
       sub.cancel();
     };
-  }, [stateName, mono]);
+  }, [State, mono]);
   return state;
 }

@@ -3,7 +3,7 @@ import 'package:mono_state/mono_state.dart';
 import './useMono.dart';
 
 typedef EffectCallback = Stream<Action> Function(
-    Actions action$, MonoState store);
+    Actions action$, MonoState mono);
 useMonoEffect<S>(EffectCallback stream$) {
   final MonoState mono = useMono();
 

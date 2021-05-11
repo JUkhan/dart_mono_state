@@ -18,8 +18,7 @@ class CounterModel {
 }
 
 class CounterState extends StateBase<CounterModel> {
-  CounterState()
-      : super(stateName: 'counter', initialState: CounterModel.init());
+  CounterState() : super(CounterModel.init());
 
   @override
   void mapActionToState(
@@ -35,7 +34,7 @@ class CounterState extends StateBase<CounterModel> {
       case 'asyncInc':
         emit(state.copyWith(isLoading: true));
         await Future.delayed(const Duration(milliseconds: 10));
-        state = store.getState('counter');
+        state = store.getState<CounterState>();
         emit(state.copyWith(count: state.count + 1, isLoading: false));
 
         break;
