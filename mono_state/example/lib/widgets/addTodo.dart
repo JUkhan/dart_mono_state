@@ -48,6 +48,8 @@ class AddTodo extends HookWidget {
           FloatingActionButton(
             onPressed: () {
               isSearchEnable.value = !isSearchEnable.value;
+              dispatch(SearchInputAction(''));
+              newTodoController.clear();
             },
             child: const Icon(Icons.search),
             mini: true,

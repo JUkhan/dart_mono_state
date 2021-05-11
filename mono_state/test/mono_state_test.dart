@@ -5,17 +5,17 @@ import 'counterState.dart';
 
 void main() {
   group('mono_state - ', () {
-    var awesome = MonoState(null);
+    var mono = MonoState(null);
 
     setUp(() {
-      awesome = MonoState([CounterState()]);
+      mono = MonoState([CounterState()]);
     });
     tearDown(() {
-      awesome.dispose();
+      mono.dispose();
     });
     ajwahTest<CounterModel>(
       'CounterState initialize',
-      build: () => awesome.select<CounterState, CounterModel>(),
+      build: () => mono.select<CounterState, CounterModel>(),
       expect: [isA<CounterModel>()],
       verify: (models) {
         expect(models[0].count, 0);
@@ -24,9 +24,9 @@ void main() {
     );
     ajwahTest<CounterModel>(
       'CounterState increment',
-      build: () => awesome.select<CounterState, CounterModel>(),
+      build: () => mono.select<CounterState, CounterModel>(),
       act: () {
-        awesome.dispatch(Action(type: 'inc'));
+        mono.dispatch(Action(type: 'inc'));
       },
       expect: [isA<CounterModel>()],
       skip: 1,
@@ -38,9 +38,9 @@ void main() {
 
     ajwahTest<CounterModel>(
       'CounterState decrement',
-      build: () => awesome.select<CounterState, CounterModel>(),
+      build: () => mono.select<CounterState, CounterModel>(),
       act: () {
-        awesome.dispatch(Action(type: 'dec'));
+        mono.dispatch(Action(type: 'dec'));
       },
       expect: [isA<CounterModel>()],
       skip: 1,
@@ -51,9 +51,9 @@ void main() {
     );
     ajwahTest<CounterModel>(
       'CounterState asyncInc',
-      build: () => awesome.select<CounterState, CounterModel>(),
+      build: () => mono.select<CounterState, CounterModel>(),
       act: () {
-        awesome.dispatch(Action(type: 'asyncInc'));
+        mono.dispatch(Action(type: 'asyncInc'));
       },
       expect: [isA<CounterModel>(), isA<CounterModel>()],
       skip: 1,
@@ -66,9 +66,9 @@ void main() {
     );
     ajwahTest<CounterModel>(
       'importState',
-      build: () => awesome.select<CounterState, CounterModel>(),
+      build: () => mono.select<CounterState, CounterModel>(),
       act: () {
-        awesome.importState<CounterState>(CounterModel(101, false));
+        mono.importState<CounterState>(CounterModel(101, false));
       },
       expect: [isA<CounterModel>()],
       skip: 1,
@@ -79,9 +79,9 @@ void main() {
     );
     ajwahTest<CounterModel>(
       'unregister state',
-      build: () => awesome.select<CounterState, CounterModel>(),
+      build: () => mono.select<CounterState, CounterModel>(),
       act: () {
-        awesome.unregisterState<CounterState>();
+        mono.unregisterState<CounterState>();
       },
       expect: [],
       skip: 1,
@@ -89,45 +89,45 @@ void main() {
 
     ajwahTest<Action>(
       'action handler whereType',
-      build: () => awesome.action$.whereType('awesome'),
+      build: () => mono.action$.whereType('mono'),
       act: () {
-        awesome.dispatch(Action(type: 'awesome'));
+        mono.dispatch(Action(type: 'mono'));
       },
       expect: [isA<Action>()],
       verify: (models) {
-        expect(models[0].type, 'awesome');
+        expect(models[0].type, 'mono');
       },
     );
 
     ajwahTest<Action>(
       'action handler whereTypes',
-      build: () => awesome.action$.whereTypes(['awesomeX', 'awesome']),
+      build: () => mono.action$.whereTypes(['monoX', 'mono']),
       act: () {
-        awesome.dispatch(Action(type: 'awesome'));
+        mono.dispatch(Action(type: 'mono'));
       },
       expect: [isA<Action>()],
       verify: (models) {
-        expect(models[0].type, 'awesome');
+        expect(models[0].type, 'mono');
       },
     );
     ajwahTest<Action>(
       'action handler where',
-      build: () => awesome.action$.where((action) => action.type == 'awesome'),
+      build: () => mono.action$.where((action) => action.type == 'mono'),
       act: () {
-        awesome.dispatch(Action(type: 'awesome'));
+        mono.dispatch(Action(type: 'mono'));
       },
       expect: [isA<Action>()],
       verify: (models) {
-        expect(models[0].type, 'awesome');
+        expect(models[0].type, 'mono');
       },
     );
 
     ajwahTest<CounterModel>(
       'dispose',
-      build: () => awesome.select<CounterState, CounterModel>(),
+      build: () => mono.select<CounterState, CounterModel>(),
       act: () {
-        awesome.dispose();
-        awesome.dispatch(Action(type: 'inc'));
+        mono.dispose();
+        mono.dispatch(Action(type: 'inc'));
       },
       expect: [isA<CounterModel>()],
       verify: (models) {

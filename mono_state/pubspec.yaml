@@ -1,7 +1,7 @@
 name: mono_state
 description: State Management Lib - reactive and less boilerplate.
 homepage: https://github.com/JUkhan/dart_mono_state
-version: 0.3.0
+version: 0.4.0
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

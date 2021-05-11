@@ -28,8 +28,6 @@ List<Todo> useTodos() {
       }
     });
   });
-  if (response.value.loading)
-    return [];
-  else
-    return response.value.data ?? [];
+
+  return response.value.data ?? [];
 }

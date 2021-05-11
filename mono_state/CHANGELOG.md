@@ -1,7 +1,11 @@
+# 0.4.0
+
+- updated readme file
+
 # 0.3.0
 
 - Removed stateName props from StateBase class. Now state should be identified by state Type.
-- Function signature changed into - select<State, Model>(), getState<State>()
+- Function signature changed into - select(), getState(), unregisterStat() functions
 
 # 0.2.0
 
